@@ -8,14 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis = ["🚊","🚞","💺","🚉", "🚂", "🚆", "🚄", "🚅", "🚃", "🚇", "🚟", "🛤", "🚝", "🚋", "🚈"]
-    @State var emojiCount = 6
+    var trains = ["🚊","🚞","💺","🚉", "🚂", "🚆", "🚄", "🚅", "🚃", "🚇", "🚟", "🛤", "🚝", "🚋", "🚈"]
+    var fruit = ["🍒", "🍓", "🍇", "🍎", "🍉", "🍑", "🍊", "🍋", "🍍"]
+    var electricity = ["⚡️", "🔋", "💡", "🔌", "🎸", "🔦", "💻", "📱", "📡"]
+    @State var themeSelected = 0
+    
+    var emojis: [String] {
+        switch themeSelected {
+        case 0:
+            return trains.shuffled()
+        case 1:
+            return fruit.shuffled()
+        case 2:
+            return electricity.shuffled()
+        default:
+            return trains
+        }
+    }
     
     var body: some View {
         VStack {
+            Text("Memorize!").font(.largeTitle)
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                    ForEach(emojis[0..<emojiCount], id: \.self) { emoji in
+                    ForEach(emojis[0...8], id: \.self) { emoji in
                         CardView(content: emoji).aspectRatio(2/3, contentMode: .fit)
                     }
                 }
@@ -23,32 +39,47 @@ struct ContentView: View {
             .foregroundColor(.red)
             Spacer()
             HStack {
-                remove
+                theme1
                 Spacer()
-                add
+                theme2
+                Spacer()
+                theme3
             }
             .font(.largeTitle)
             .padding(.horizontal)
         }
         .padding(.horizontal)
     }
-    var remove: some View {
+    var theme1: some View {
         Button(action: {
-            if (emojiCount > 1) {
-                emojiCount -= 1
-            }
+            themeSelected = 0
         }, label: {
-            Image(systemName: "minus.circle")
+            VStack {
+                Text("Trains!").font(.title2)
+                Image(systemName: "tram")
+            }
         })
     }
-    var add: some View {
+    var theme2: some View {
         Button(action: {
-            if (emojiCount < emojis.count) {
-                emojiCount += 1
-            }
+            themeSelected = 1
         }) {
-            Image(systemName: "plus.circle")
-
+            VStack {
+                Text("Fruity").font(.title2)
+                Image(systemName: "globe.europe.africa.fill")
+            }
+            
+        }
+    }
+    var theme3: some View {
+        Button(action: {
+            themeSelected = 2
+        }) {
+            VStack {
+                Text("Electrical").font(.title2)
+                Image(systemName: "bolt.fill")
+            }
+            
         }
     }
 }
@@ -79,7 +110,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .preferredColorScheme(.dark)
-.previewInterfaceOrientation(.portrait)
+            .previewInterfaceOrientation(.portrait)
         ContentView()
             .preferredColorScheme(.light)
     }
