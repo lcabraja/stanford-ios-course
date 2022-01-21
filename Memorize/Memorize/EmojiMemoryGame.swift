@@ -8,47 +8,29 @@
 import Foundation
 
 class EmojiMemoryGame: ObservableObject {
-    private static let trains = ["🚊","🚞","💺","🚉", "🚂", "🚆", "🚄", "🚅", "🚃", "🚇", "🚟", "🛤", "🚝", "🚋", "🚈"]
-    private static let fruit = ["🍒", "🍓", "🍇", "🍎", "🍉", "🍑", "🍊", "🍋", "🍍"]
-    private static let electricity = ["⚡️", "🔋", "💡", "🔌", "🎸", "🔦", "💻", "📱", "📡"]
-    
-    enum Theme {
-        case Trains
-        case Fruit
-        case Electricity
-    }
-    
     @Published private var model: MemoryGame<String>
-    @Published var selectedTheme: Theme
-    let numberOfPairsOfCards: Int
+    var selectedTheme: Theme
     
-    init(numberOfPairsOfCards: Int, defaultTheme: Theme) {
-        self.numberOfPairsOfCards = numberOfPairsOfCards
-        self.selectedTheme = defaultTheme
-        self.model = EmojiMemoryGame.createMemoryGame(numberOfPairsOfCards: numberOfPairsOfCards, selectedTheme: defaultTheme)
+    init() {
+        self.selectedTheme = Theme.allCases.randomElement()!
+        self.model = MemoryGame<String>(
+            numberOfPairsOfCards: selectedTheme.content.numberOfPairsOfCards,
+            createCardContent: EmojiMemoryGame.createMemoryGame(self.selectedTheme.content.emojis)
+        )
     }
     
-    private static func createMemoryGame(numberOfPairsOfCards: Int, selectedTheme: Theme) -> MemoryGame<String> {
-        MemoryGame<String>(numberOfPairsOfCards: numberOfPairsOfCards) { pairIndex in getSelectedThemeArray(selectedTheme)[pairIndex] }
-    }
-    
-    private func updateMemoryGame() {
-        model = EmojiMemoryGame.createMemoryGame(numberOfPairsOfCards: self.numberOfPairsOfCards, selectedTheme: self.selectedTheme)
-    }
-    
-    private static func getSelectedThemeArray(_ theme: Theme) -> [String] {
-        switch theme {
-        case .Trains:
-            return trains
-        case .Fruit:
-            return fruit
-        case .Electricity:
-            return electricity
+    private static func createMemoryGame(_ content: [String]) -> ((Int) -> String) {
+        return { pairIndex in
+            content[pairIndex]
         }
     }
     
     var cards: Array<MemoryGame<String>.Card> {
         return model.cards
+    }
+    
+    var score: Int {
+        return model.score
     }
     
     // MARK: - intents
@@ -60,6 +42,5 @@ class EmojiMemoryGame: ObservableObject {
     func changeTheme(_ theme: Theme) {
         objectWillChange.send()
         selectedTheme = theme
-        updateMemoryGame()
     }
 }

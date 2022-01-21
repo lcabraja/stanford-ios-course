@@ -12,10 +12,12 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Memorize!").font(.largeTitle)
-            gameContent.foregroundColor(.red)
+            Text(viewModel.selectedTheme.rawValue)
+                .foregroundColor(viewModel.selectedTheme.content.color)
+                .font(.largeTitle)
+            gameContent.foregroundColor(viewModel.selectedTheme.content.color)
             Spacer()
-            themeButtons.font(.largeTitle).padding(.horizontal)
+            Text("Score \(viewModel.score)").font(.largeTitle)
         }
         .padding(.horizontal)
     }
@@ -31,50 +33,6 @@ struct ContentView: View {
                         }
                 }
             }
-        }
-    }
-    
-    var themeButtons: some View {
-        HStack {
-            trainsThemeButton
-            Spacer()
-            fruitThemeButton
-            Spacer()
-            electricityThemeButton
-        }
-    }
-    
-    var trainsThemeButton: some View {
-        Button(action: {
-            viewModel.changeTheme(.Trains)
-        }, label: {
-            VStack {
-                Text("Trains!").font(.title2)
-                Image(systemName: "tram")
-            }
-        })
-    }
-    
-    var fruitThemeButton: some View {
-        Button(action: {
-            viewModel.changeTheme(.Fruit)
-        }) {
-            VStack {
-                Text("Fruity").font(.title2)
-                Image(systemName: "globe.europe.africa.fill")
-            }
-            
-        }
-    }
-    var electricityThemeButton: some View {
-        Button(action: {
-            viewModel.changeTheme(.Electricity)
-        }) {
-            VStack {
-                Text("Electrical").font(.title2)
-                Image(systemName: "bolt.fill")
-            }
-            
         }
     }
 }
@@ -101,7 +59,7 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let game = EmojiMemoryGame(numberOfPairsOfCards: 4, defaultTheme: .Trains)
+        let game = EmojiMemoryGame()
         ContentView(viewModel: game)
             .preferredColorScheme(.dark)
             .previewInterfaceOrientation(.portrait)
