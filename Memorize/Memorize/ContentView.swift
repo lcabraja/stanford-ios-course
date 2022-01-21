@@ -8,51 +8,45 @@
 import SwiftUI
 
 struct ContentView: View {
-    var trains = ["🚊","🚞","💺","🚉", "🚂", "🚆", "🚄", "🚅", "🚃", "🚇", "🚟", "🛤", "🚝", "🚋", "🚈"]
-    var fruit = ["🍒", "🍓", "🍇", "🍎", "🍉", "🍑", "🍊", "🍋", "🍍"]
-    var electricity = ["⚡️", "🔋", "💡", "🔌", "🎸", "🔦", "💻", "📱", "📡"]
-    @State var themeSelected = 0
-    
-    var emojis: [String] {
-        switch themeSelected {
-        case 0:
-            return trains.shuffled()
-        case 1:
-            return fruit.shuffled()
-        case 2:
-            return electricity.shuffled()
-        default:
-            return trains
-        }
-    }
+    @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
         VStack {
             Text("Memorize!").font(.largeTitle)
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                    ForEach(emojis[0...8], id: \.self) { emoji in
-                        CardView(content: emoji).aspectRatio(2/3, contentMode: .fit)
-                    }
-                }
-            }
-            .foregroundColor(.red)
+            gameContent.foregroundColor(.red)
             Spacer()
-            HStack {
-                theme1
-                Spacer()
-                theme2
-                Spacer()
-                theme3
-            }
-            .font(.largeTitle)
-            .padding(.horizontal)
+            themeButtons.font(.largeTitle).padding(.horizontal)
         }
         .padding(.horizontal)
     }
-    var theme1: some View {
+    
+    var gameContent: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+                ForEach(viewModel.cards) { card in
+                    CardView(card: card)
+                        .aspectRatio(2/3, contentMode: .fit)
+                        .onTapGesture {
+                            viewModel.choose(card)
+                        }
+                }
+            }
+        }
+    }
+    
+    var themeButtons: some View {
+        HStack {
+            trainsThemeButton
+            Spacer()
+            fruitThemeButton
+            Spacer()
+            electricityThemeButton
+        }
+    }
+    
+    var trainsThemeButton: some View {
         Button(action: {
-            themeSelected = 0
+            viewModel.changeTheme(.Trains)
         }, label: {
             VStack {
                 Text("Trains!").font(.title2)
@@ -60,9 +54,10 @@ struct ContentView: View {
             }
         })
     }
-    var theme2: some View {
+    
+    var fruitThemeButton: some View {
         Button(action: {
-            themeSelected = 1
+            viewModel.changeTheme(.Fruit)
         }) {
             VStack {
                 Text("Fruity").font(.title2)
@@ -71,9 +66,9 @@ struct ContentView: View {
             
         }
     }
-    var theme3: some View {
+    var electricityThemeButton: some View {
         Button(action: {
-            themeSelected = 2
+            viewModel.changeTheme(.Electricity)
         }) {
             VStack {
                 Text("Electrical").font(.title2)
@@ -85,33 +80,32 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    var content: String
-    @State var isFaceUp: Bool = true
+    let card: MemoryGame<String>.Card
+    
     var body: some View {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: 20)
-            if isFaceUp {
+            if card.isFaceUp {
                 shape.fill(.white)
                 shape.strokeBorder(lineWidth: 3)
-                Text(content).font(.largeTitle)
+                Text(card.content).font(.largeTitle)
+            } else if card.isMatched {
+                shape.stroke()
             }
             else {
                 shape.fill()
             }
         }
-        .onTapGesture {
-            isFaceUp = !isFaceUp
-        }
-        
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let game = EmojiMemoryGame(numberOfPairsOfCards: 4, defaultTheme: .Trains)
+        ContentView(viewModel: game)
             .preferredColorScheme(.dark)
             .previewInterfaceOrientation(.portrait)
-        ContentView()
+        ContentView(viewModel: game)
             .preferredColorScheme(.light)
     }
 }
