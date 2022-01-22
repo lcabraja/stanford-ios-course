@@ -20,7 +20,7 @@ enum Theme: String, CaseIterable {
     case Electricity
     case White
     case Shapes
-    case DisneyFamilies
+    case DisneyFamilies = "Disney Families"
     
     var content: ThemeContents {
         switch self {
