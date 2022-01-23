@@ -16,6 +16,7 @@
 		83540EF0279B1BAF0068BECB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83540EEF279B1BAE0068BECB /* Theme.swift */; };
 		83540EF2279B8AB10068BECB /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83540EF1279B8AB10068BECB /* AspectVGrid.swift */; };
 		83540EF4279B94A50068BECB /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83540EF3279B94A50068BECB /* Pie.swift */; };
+		83540EF6279C64FB0068BECB /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83540EF5279C64FB0068BECB /* Cardify.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		83540EEF279B1BAE0068BECB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		83540EF1279B8AB10068BECB /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 		83540EF3279B94A50068BECB /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
+		83540EF5279C64FB0068BECB /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				83540EF3279B94A50068BECB /* Pie.swift */,
 				83540EF1279B8AB10068BECB /* AspectVGrid.swift */,
 				83540EEF279B1BAE0068BECB /* Theme.swift */,
+				83540EF5279C64FB0068BECB /* Cardify.swift */,
 				83540EE1279750CA0068BECB /* Assets.xcassets */,
 				83540EE3279750CA0068BECB /* Preview Content */,
 			);
@@ -154,6 +157,7 @@
 			files = (
 				83540EF2279B8AB10068BECB /* AspectVGrid.swift in Sources */,
 				83540EE0279750C80068BECB /* EmojiMemoryGameView.swift in Sources */,
+				83540EF6279C64FB0068BECB /* Cardify.swift in Sources */,
 				83540EEC2798C1010068BECB /* MemoryGame.swift in Sources */,
 				83540EF0279B1BAF0068BECB /* Theme.swift in Sources */,
 				83540EF4279B94A50068BECB /* Pie.swift in Sources */,
